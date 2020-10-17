@@ -1,0 +1,206 @@
+ecasanes@Ernests-Macbook-Pro nodevisits % docker build -t ecasanes/node-visits:0.0.1
+"docker build" requires exactly 1 argument.
+See 'docker build --help'.
+
+Usage:  docker build [OPTIONS] PATH | URL | -
+
+Build an image from a Dockerfile
+ecasanes@Ernests-Macbook-Pro nodevisits % docker build -t ecasanes/node-visits:0.0.1 .
+Sending build context to Docker daemon  4.608kB
+Step 1/6 : FROM node:alpine
+ ---> 87e4e57acaa5
+Step 2/6 : WORKDIR /usr/app
+ ---> Using cache
+ ---> 0dd18b988ad9
+Step 3/6 : COPY ./package.json ./
+ ---> b841c1e4f5a6
+Step 4/6 : RUN npm install
+ ---> Running in decfcfeeac1c
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN app No description
+npm WARN app No repository field.
+npm WARN app No license field.
+
+added 54 packages from 41 contributors and audited 54 packages in 3.347s
+found 0 vulnerabilities
+
+Removing intermediate container decfcfeeac1c
+ ---> 47f2e621b891
+Step 5/6 : COPY ./ ./
+ ---> f5a20833facd
+Step 6/6 : CMD ["npm", "start"]
+ ---> Running in 801983ea0410
+Removing intermediate container 801983ea0410
+ ---> 7b5e335a89dd
+Successfully built 7b5e335a89dd
+Successfully tagged ecasanes/node-visits:0.0.1
+ecasanes@Ernests-Macbook-Pro nodevisits % docker run ecasanes/node-visits:0.0.1
+
+> @ start /usr/app
+> node index.js
+
+listening to port 8081
+events.js:291
+      throw er; // Unhandled 'error' event
+      ^
+
+Error: connect ECONNREFUSED 127.0.0.1:6379
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1145:16)
+Emitted 'error' event on RedisClient instance at:
+    at RedisClient.on_error (/usr/app/node_modules/redis/index.js:406:14)
+    at Socket.<anonymous> (/usr/app/node_modules/redis/index.js:279:14)
+    at Socket.emit (events.js:314:20)
+    at emitErrorNT (internal/streams/destroy.js:106:8)
+    at emitErrorCloseNT (internal/streams/destroy.js:74:3)
+    at processTicksAndRejections (internal/process/task_queues.js:80:21) {
+  errno: -111,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 6379
+}
+npm ERR! code ELIFECYCLE
+npm ERR! errno 1
+npm ERR! @ start: `node index.js`
+npm ERR! Exit status 1
+npm ERR! 
+npm ERR! Failed at the @ start script.
+npm ERR! This is probably not a problem with npm. There is likely additional logging output above.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /root/.npm/_logs/2020-10-17T07_41_39_927Z-debug.log
+ecasanes@Ernests-Macbook-Pro nodevisits % ls  
+Dockerfile      index.js        package.json
+ecasanes@Ernests-Macbook-Pro nodevisits % cd ..
+ecasanes@Ernests-Macbook-Pro docker-workspace % ls
+nodevisits      redis-image     simpleweb
+ecasanes@Ernests-Macbook-Pro docker-workspace % cd redis-image
+ecasanes@Ernests-Macbook-Pro redis-image % ls
+Dockerfile
+ecasanes@Ernests-Macbook-Pro redis-image % docker image ls
+REPOSITORY             TAG                 IMAGE ID            CREATED             SIZE
+ecasanes/node-visits   0.0.1               7b5e335a89dd        21 minutes ago      121MB
+ecasanes/node-simple   0.0.2               85dcd2ae6d05        About an hour ago   120MB
+ecasanes/node-simple   0.0.1               3671d58912cd        3 days ago          120MB
+ecasanes/node          0.0.1               d89b0e464721        3 days ago          117MB
+node                   alpine              87e4e57acaa5        8 days ago          117MB
+busybox                latest              6858809bf669        5 weeks ago         1.23MB
+alpine                 latest              a24bb4013296        4 months ago        5.57MB
+hello-world            latest              bf756fb1ae65        9 months ago        13.3kB
+ecasanes@Ernests-Macbook-Pro redis-image % cd ..        
+ecasanes@Ernests-Macbook-Pro docker-workspace % ls
+nodevisits      redis-image     simpleweb
+ecasanes@Ernests-Macbook-Pro docker-workspace % cd nodevisits 
+ecasanes@Ernests-Macbook-Pro nodevisits % ls
+Dockerfile      index.js        package.json
+ecasanes@Ernests-Macbook-Pro nodevisits % docker run redis
+Unable to find image 'redis:latest' locally
+latest: Pulling from library/redis
+bb79b6b2107f: Pull complete 
+1ed3521a5dcb: Pull complete 
+5999b99cee8f: Pull complete 
+f99a38f44786: Pull complete 
+d6fc863042e2: Pull complete 
+9bd1af4eae13: Pull complete 
+Digest: sha256:33ca074e6019b451235735772a9c3e7216f014aae8eb0580d7e94834fe23efb3
+Status: Downloaded newer image for redis:latest
+ecasanes@Ernests-Macbook-Pro nodevisits % docker-compose up
+Creating network "nodevisits_default" with the default driver
+Building node-app
+Step 1/6 : FROM node:alpine
+ ---> 87e4e57acaa5
+Step 2/6 : WORKDIR /usr/app
+ ---> Using cache
+ ---> 0dd18b988ad9
+Step 3/6 : COPY ./package.json ./
+ ---> da455889d4b0
+Step 4/6 : RUN npm install
+ ---> Running in 809411f6bc91
+npm notice created a lockfile as package-lock.json. You should commit this file.
+npm WARN app No description
+npm WARN app No repository field.
+npm WARN app No license field.
+
+added 54 packages from 41 contributors and audited 54 packages in 3.438s
+found 0 vulnerabilities
+
+Removing intermediate container 809411f6bc91
+ ---> 264d4378f3f0
+Step 5/6 : COPY ./ ./
+ ---> 0c377469b08f
+Step 6/6 : CMD ["npm", "start"]
+ ---> Running in 3e651551afcc
+Removing intermediate container 3e651551afcc
+ ---> 27c6e598a2c2
+
+Successfully built 27c6e598a2c2
+Successfully tagged nodevisits_node-app:latest
+WARNING: Image for service node-app was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Creating nodevisits_redis-server_1 ... done
+Creating nodevisits_node-app_1     ... done
+Attaching to nodevisits_redis-server_1, nodevisits_node-app_1
+redis-server_1  | 1:C 17 Oct 2020 08:43:08.838 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+redis-server_1  | 1:C 17 Oct 2020 08:43:08.838 # Redis version=6.0.8, bits=64, commit=00000000, modified=0, pid=1, just started
+redis-server_1  | 1:C 17 Oct 2020 08:43:08.838 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
+redis-server_1  | 1:M 17 Oct 2020 08:43:08.842 * Running mode=standalone, port=6379.
+redis-server_1  | 1:M 17 Oct 2020 08:43:08.842 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+redis-server_1  | 1:M 17 Oct 2020 08:43:08.842 # Server initialized
+redis-server_1  | 1:M 17 Oct 2020 08:43:08.842 * Ready to accept connections
+node-app_1      | 
+node-app_1      | > @ start /usr/app
+node-app_1      | > node index.js
+node-app_1      | 
+node-app_1      | listening to port 8081
+^CGracefully stopping... (press Ctrl+C again to force)
+Stopping nodevisits_redis-server_1 ... done
+Stopping nodevisits_node-app_1     ... done
+ecasanes@Ernests-Macbook-Pro nodevisits % git status
+fatal: not a git repository (or any of the parent directories): .git
+ecasanes@Ernests-Macbook-Pro nodevisits % docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+ecasanes@Ernests-Macbook-Pro nodevisits % git status
+fatal: not a git repository (or any of the parent directories): .git
+ecasanes@Ernests-Macbook-Pro nodevisits % git init
+Initialized empty Git repository in /Users/ecasanes/Documents/Backend Workspace/docker-workspace/nodevisits/.git/
+ecasanes@Ernests-Macbook-Pro nodevisits % git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        .termhistory/
+        Dockerfile
+        docker-compose.yml
+        index.js
+        package.json
+
+nothing added to commit but untracked files present (use "git add" to track)
+ecasanes@Ernests-Macbook-Pro nodevisits % git add . --all
+ecasanes@Ernests-Macbook-Pro nodevisits % git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   .termhistory/10-17-2020
+        new file:   Dockerfile
+        new file:   docker-compose.yml
+        new file:   index.js
+        new file:   package.json
+
+ecasanes@Ernests-Macbook-Pro nodevisits % git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git rm --cached <file>..." to unstage)
+        new file:   .termhistory/10-17-2020
+        new file:   Dockerfile
+        new file:   docker-compose.yml
+        new file:   index.js
+        new file:   package.json
+
+ecasanes@Ernests-Macbook-Pro nodevisits % 

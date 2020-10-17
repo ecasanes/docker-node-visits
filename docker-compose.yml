@@ -1,0 +1,17 @@
+version: '3'
+# services somewhat means a type of container
+services:
+  # name of the service/container
+  redis-server: 
+    image: redis
+  node-app:
+    # look into the current directory for a Dockerfile
+    build: .
+    ports:
+      # from local machine : to container
+      # this is solely for the container to be available in public
+      # using docker-compose, we don't need to worry about connecting the 2 running containers
+      - "4001:8081"
+  
+
+# then run docker-compose up --build
